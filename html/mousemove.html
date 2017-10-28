@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>鼠标滑动</title>
+    <style>
+        *{ padding: 0;margin: 0;}
+        #mycanvas{ background: #1d1d1d;display: block;z-index: -1;}
+    </style>
+</head>
+<body>
+<canvas id="mycanvas">您的浏览器不支持canvas</canvas>
+
+<script type="text/javascript" charset="utf-8">
+    var canvas = document.getElementById("mycanvas");
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width = window.innerWidth;
+    var H = canvas.height = window.innerHeight;
+    window.onresize = function () {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    };
+
+    function Mouseslide() {
+
+    }
+
+    function random(min,max) {
+        return Math.random()*(max-min)+min;
+    }
+
+    function color() {
+        var r = Math.floor(Math.random()*255);
+        var g = Math.floor(Math.random()*255);
+        var b = Math.floor(Math.random()*255);
+        var o = random(.3,1);
+        return "rgba("+r+","+g+","+b+","+o+")";
+    }
+
+    var partic = [];
+    Mouseslide.prototype = {
+        init:function (x,y) {
+            this.x = x;
+            this.y = y;
+            this.r = random(20,30);
+            this.color = color();
+            this.deg = random(0,20);
+            this.force = random(2,6);
+            this.vx = Math.cos(this.deg)*this.force;//x向Math.cos(this.deg)方向移动force距离
+            this.vy = Math.sin(this.deg)*this.force;
+        },
+        draw:function () {
+            ctx.globalCompositeOperation = "lighter";
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.arc(this.x,this.y,this.r,0,Math.PI*2,false);
+            ctx.fill();
+            this.update();
+        },
+        update:function () {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.r *= 0.965;
+            //散开的粒子的加速度
+            this.vx += Math.cos(this.deg)*.1;
+            this.vy += Math.sin(this.deg)*.1;
+            //整体速度递减
+            this.vx *= .9;
+            this.vy *= .9;
+        }
+    };
+
+
+    function paint() {
+        ctx.clearRect(0,0,W,H);
+        for(var i=0,len=partic.length;i<len;i++){
+            partic[i].draw();
+        }
+        requestAnimationFrame(paint);
+    }
+    paint();
+
+    canvas.onmousemove = function (event) {
+        var x = event.clientX;
+        var y = event.clientY;
+        create(x,y);
+        if(partic.length>1000){
+            partic.shift();
+        }
+    };
+
+    function create(x,y) {
+        var mouse = new Mouseslide();
+        mouse.init(x,y);
+        partic.push(mouse);
+    }
+
+
+</script>
+</body>
+</html>

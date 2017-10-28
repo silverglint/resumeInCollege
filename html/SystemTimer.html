@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas绘制时间</title>
+    <style>
+        *{ padding: 0;margin: 0;}
+        #canvas{ display: block;}
+    </style>
+</head>
+<body>
+    <canvas id="canvas">您的浏览器不支持canvas</canvas>
+
+    <script src="../js/digit.js"></script>
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var W = canvas.width = window.innerWidth;
+        var H = canvas.height = window.innerHeight;
+        var r = Math.round(W*4/5/108-1);
+        var MAR_TOP = H/5;
+        var MAR_LEFT = W/10;
+
+        var Now = new Date();
+        var Old = Now;
+        var ohours = Old.getHours();
+        var omin = Old.getMinutes();
+        var osec = Old.getSeconds();
+
+        var hours = Now.getHours();
+        var min = Now.getMinutes();
+        var sec = Now.getSeconds();
+
+        var balls = [];
+
+        window.onresize = function () {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+            r = Math.round(W*4/5/108-1);
+            MAR_TOP = H/5;
+            MAR_LEFT = W/10;
+        };
+
+        window.onload = function () {
+
+
+            nowTime();
+
+
+        };
+
+        function nowTime() {
+            update();
+            ctx.clearRect(0,0,W,H);
+            draw(MAR_LEFT,MAR_TOP,parseInt(hours/10),ctx);
+            draw(MAR_LEFT+15*(r+1),MAR_TOP,hours%10,ctx);
+
+            draw(MAR_LEFT+2*15*(r+1),MAR_TOP,10,ctx);
+
+            draw(MAR_LEFT+2*15*(r+1)+9*(r+1),MAR_TOP,Math.floor(min/10),ctx);
+            draw(MAR_LEFT+3*15*(r+1)+9*(r+1),MAR_TOP,min%10,ctx);
+
+            draw(MAR_LEFT+4*15*(r+1)+9*(r+1),MAR_TOP,10,ctx);
+
+            draw(MAR_LEFT+4*15*(r+1)+2*9*(r+1),MAR_TOP,Math.floor(sec/10),ctx);
+            draw(MAR_LEFT+5*15*(r+1)+2*9*(r+1),MAR_TOP,sec%10,ctx);
+
+            for(var i=0;i<balls.length;i++){
+                ctx.beginPath();
+                ctx.arc(balls[i].x,balls[i].y,r,0,Math.PI*2);
+                ctx.closePath();
+                ctx.fillStyle = balls[i].color;
+                ctx.fill();
+            }
+            requestAnimationFrame(nowTime);
+        }
+
+        function draw(x,y,num,ctx) {
+            for(var i=0;i<digit[num].length;i++){
+                for(var j=0;j<digit[num][i].length;j++){
+                    if(digit[num][i][j] === 1){
+                        ctx.beginPath();
+                        ctx.arc(x+j*2*(r+1)+(r+1),y+i*2*(r+1)+(r+1),r,0,Math.PI*2);
+                        ctx.closePath();
+                        ctx.fillStyle = "#000a72";
+                        ctx.fill();
+                    }
+                }
+            }
+        }
+
+        function update() {
+
+            Now = new Date();
+            hours = Now.getHours();
+            min = Now.getMinutes();
+            sec = Now.getSeconds();
+
+            if(ohours/10!=hours/10){
+                addballs(MAR_LEFT,MAR_TOP,parseInt(hours/10));
+            }
+            if(ohours%10!=hours%10){
+                addballs(MAR_LEFT+15*(r+1),MAR_TOP,hours%10);
+            }
+
+            if(Math.floor(omin/10)!=Math.floor(min/10)){
+                addballs(MAR_LEFT+2*15*(r+1)+9*(r+1),MAR_TOP,Math.floor(min/10));
+            }
+            if(omin%10!=min%10){
+                addballs(MAR_LEFT+3*15*(r+1)+9*(r+1),MAR_TOP,min%10);
+            }
+
+            if(Math.floor(osec/10)!=Math.floor(sec/10)){
+                addballs(MAR_LEFT+4*15*(r+1)+2*9*(r+1),MAR_TOP,Math.floor(sec/10));
+            }
+            if(osec%10!=sec%10){
+                addballs(MAR_LEFT+5*15*(r+1)+2*9*(r+1),MAR_TOP,sec%10);
+            }
+
+            Old = Now;
+            ohours = Old.getHours();
+            omin = Old.getMinutes();
+            osec = Old.getSeconds();
+
+            for(var i=0;i<balls.length;i++){
+
+                balls[i].x += balls[i].vx;
+                balls[i].y += balls[i].vy;
+                balls[i].vy += balls[i].g;
+
+                if(balls[i].y>=H-r){
+                    if(balls[i].vy*0.7<2.5){
+                        balls[i].y = H-r;
+                        balls[i].vy = 0;
+                        balls[i].g = 0;
+                    }else {
+                        balls[i].y = H-r;
+                        balls[i].vy = -balls[i].vy*0.7;
+                    }
+
+                }
+                if(balls[i].x+r<0||balls[i].x-r>W){
+                    balls.splice(i,1);
+                }
+
+            }
+        }
+
+        function addballs(x,y,num) {
+            for(var i=0;i<digit[num].length;i++){
+                for(var j=0;j<digit[num][i].length;j++){
+                    if(digit[num][i][j] === 1){
+                        var ball = {
+                            x:x+j*2*(r+1)+(r+1),
+                            y:y+i*2*(r+1)+(r+1),
+                            g:0.6,
+                            vx:Math.random()*8-4,
+                            vy:-Math.random()*4-1,
+                            color:randomColor()
+                        };
+
+                        balls.push(ball);
+                        if(balls.length>400){
+                            balls.shift();
+                        }
+                    }
+                }
+            }
+        }
+
+        function randomColor() {
+            var col = [0, 1, 2];
+            col[0] = Math.random() * 100 + 155;
+            col[0] = col[0].toFixed();
+            col[1] = Math.random() * 100 + 155;
+            col[1] = col[1].toFixed();
+            col[2] = Math.random() * 100 + 155;
+            col[2] = col[2].toFixed();
+            var num = Math.floor(Math.random() * 3);
+            col[num] = 0;
+            return "rgba(" + col[0] + "," + col[1] + "," + col[2] + ","+"1";
+        }
+    </script>
+</body>
+</html>

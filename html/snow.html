@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>雪花</title>
+    <style>
+        *{ padding: 0;margin: 0;}
+        #mycanvas{ display: block;width: 100%;height: 100%;background: #282828;}
+    </style>
+</head>
+<body>
+<canvas id="mycanvas">您的浏览器不支持canvas</canvas>
+
+<script type="text/javascript" charset="utf-8">
+    var canvas=document.getElementById("mycanvas");
+    var ctx=canvas.getContext("2d");
+    var W = canvas.width = window.innerWidth;
+    var H = canvas.height = window.innerHeight;
+    window.onresize=function () {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    };
+
+    function Snow() {
+
+    }
+
+    function random(min,max) {
+        return Math.random()*(max-min)+min;
+    }
+
+
+    Snow.prototype={
+        init:function () {
+            this.x = random(0,W);
+            this.y = random((-1/3)*H,H);
+            this.r = random(0,2);
+            this.v = random(1,5);
+        },
+        draw:function () {
+            ctx.fillStyle="white";
+            ctx.beginPath();
+            ctx.arc(this.x,this.y,this.r,0,Math.PI*2,false);
+            ctx.fill();
+            this.update();
+        },
+        update:function () {
+            if(this.y<=H){
+                this.y+=this.v;
+            }else{
+                this.init();
+            }
+        }
+
+    };
+
+    var snows = [];
+    for(var i=0;i<1000;i++){
+        setTimeout(function () {
+            var snow = new Snow();
+            snow.init();
+            snows.push(snow);
+        },100)
+    }
+
+    function move() {
+
+        ctx.clearRect(0,0,W,H);
+
+        for(var i=0;i<snows.length;i++){
+            snows[i].draw();
+        }
+        requestAnimationFrame(move);
+    }
+    move();
+</script>
+</body>
+</html>

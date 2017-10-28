@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>star</title>
+    <style>
+        *{ padding: 0;margin: 0;}
+        #mycanvas{ display: block;}
+    </style>
+</head>
+<body>
+    <canvas id="mycanvas">您的浏览器不支持canvas</canvas>
+
+<script>
+    var canvas = document.getElementById("mycanvas");
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width = window.innerWidth;
+    var H = canvas.height = window.innerHeight;
+
+
+    //径向渐变
+    var starColor = ctx.createRadialGradient(400,300,0,400,300,300);
+    starColor.addColorStop(1,"blue");
+    starColor.addColorStop(0,"white");
+    starColor.addColorStop(.2,"red");
+    starColor.addColorStop(.4,"yellow");
+    starColor.addColorStop(.6,"green");
+
+
+    drawStar(ctx,400,300,120,300,10);
+    ctx.fillStyle = starColor;
+    ctx.fill();
+    ctx.stroke();
+
+    //五角星路径
+    function drawStar(ctx,x,y,r,R,deg) {
+        ctx.beginPath();
+        for(var i=0;i<5;i++){
+            ctx.lineTo(Math.cos((18+i*72-deg)/180*Math.PI)*R+x,-Math.sin((18+i*72-deg)/180*Math.PI)*R+y);
+            ctx.lineTo(Math.cos((54+i*72-deg)/180*Math.PI)*r+x,-Math.sin((54+i*72-deg)/180*Math.PI)*r+y);
+        }
+        ctx.closePath();
+    }
+</script>
+</body>
+</html>

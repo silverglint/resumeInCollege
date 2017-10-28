@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>balls</title>
+    <style>
+        *{ padding: 0;margin: 0;}
+        #mycanvas{ display: block;position: relative;}
+        div{ position: absolute;width: 160px;height: 80px;top: 20px;left: 20px;background-color: rgba(255, 15, 24, 0.4);text-align: center; }
+        p{ padding-top: 10px;cursor: pointer;}
+        a{ text-decoration: none;line-height: 50px;}
+    </style>
+</head>
+<body>
+<canvas id="mycanvas">您的浏览器不支持canvas</canvas>
+<div>
+    <p id="stop">The World！</p>
+    <a href="#" id="lighter">叠加</a>
+    <a href="#" id="xor">取反</a>
+</div>
+<script>
+    var canvas = document.getElementById("mycanvas");
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width = window.innerWidth;
+    var H = canvas.height = window.innerHeight;
+    var balls = [];
+    var ismoving = true;
+    window.onresize = function () {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    };
+
+    var lighter = document.getElementById("lighter");
+    var xor = document.getElementById("xor");
+    var stop = document.getElementById("stop");
+
+    lighter.onclick = function () {
+        for(var i=0;i<balls.length;i++){
+            balls[i].globalCompositeOperation = "lighter";
+        }
+    };
+    xor.onclick = function () {
+        for(var i=0;i<balls.length;i++){
+            balls[i].globalCompositeOperation = "xor";
+        }
+    };
+    stop.onclick = function () {
+        if(ismoving){
+            ismoving = false;
+            this.innerText = "时间开始流动";
+        }else{
+            ismoving = true;
+            this.innerText = "The World！";
+        }
+    };
+
+    function Ball() {
+
+    }
+
+    function rnd(min,max) {
+        return Math.random()*(max-min)+min;
+    }
+
+    function color() {
+        var r =Math.ceil(Math.random()*255);
+        var g =Math.ceil(Math.random()*255);
+        var b =Math.ceil(Math.random()*255);
+        return "rgb("+r+","+g+","+b+")";
+    }
+
+    Ball.prototype = {
+        init:function () {
+            this.r = rnd(25,60);
+            this.x = rnd(this.r,W-this.r);
+            this.y = rnd(this.r,H-this.r);
+            this.vx = rnd(-6,6);
+            this.vy = rnd(-6,6);
+            this.color = color();
+            this.globalCompositeOperation = "xor";
+        },
+        draw:function () {
+            ctx.beginPath();
+            ctx.arc(this.x,this.y,this.r,0,Math.PI*2,true);
+            ctx.globalCompositeOperation = this.globalCompositeOperation;
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            this.update();
+        },
+        update:function () {
+            this.x += this.vx;
+            this.y += this.vy;
+            if(this.x>W-this.r||this.x<this.r){
+                this.vx = -this.vx;
+            }
+            if(this.y>H-this.r||this.y<this.r){
+                this.vy = -this.vy;
+            }
+        }
+    };
+
+    for(var i=0;i<100;i++){
+        var ball = new Ball();
+        ball.init();
+        balls.push(ball);
+    }
+
+    function paint() {
+        if(ismoving){
+            ctx.clearRect(0,0,W,H);
+            for(var i=0;i<balls.length;i++){
+                balls[i].draw();
+            }
+        }
+        requestAnimationFrame(paint);
+    }
+    paint();
+
+</script>
+</body>
+</html>

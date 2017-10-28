@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>烟花</title>
+    <style>
+        *{ padding: 0;margin: 0;}
+        #mycanvas{ display: block;width: 100%;height: 100%;position: relative;background: black;}
+        body{ overflow: hidden;}
+        .firework{
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        .fires{
+            position: absolute;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas">您的浏览器不支持canvas</canvas>
+
+<script type="text/javascript" charset="utf-8">
+    var canvas = document.getElementById("mycanvas");
+    var ctx = canvas.getContext("2d");
+    var H = canvas.height = window.innerHeight;
+    var W = canvas.width = window.innerWidth;
+    window.onresize = function () {
+        H = canvas.height = window.innerHeight;
+        W = canvas.width = window.innerWidth;
+    };
+
+    var speed = 10;
+    var timer = null;
+    function firework(x,y) {
+            //没有.firework类存在时，才能创建新的烟火
+            if(document.querySelector('.firework')===null){
+                var mdiv=document.createElement("div");
+                mdiv.className = "firework";
+                mdiv.style.left = x+"px";
+                mdiv.style.top = H+"px";
+                mdiv.style.backgroundColor = color();
+                document.body.appendChild(mdiv);
+
+
+                timer=setInterval(function () {
+                    mdiv.style.top = mdiv.offsetTop-speed+"px";
+                    if(mdiv.offsetTop<=y){
+                        clearInterval(timer);
+                        document.body.removeChild(mdiv);
+                        fires(x,y);
+                    }
+                },1000/60)
+            }
+    }
+
+
+    function fires(x,y) {
+        var nfires=[];
+        for(var i=0;i<Math.ceil(Math.random()*50+50);i++){
+            nfires[i]=document.createElement("div");
+            nfires[i].className = "fires";
+            nfires[i].style.left = x+"px";
+            nfires[i].style.top = y+"px";
+            nfires[i].style.width = Math.random()*5+5+"px";
+            nfires[i].style.height = Math.random()*5+5+"px";
+            nfires[i].style.backgroundColor = color();
+            //-10~10
+            nfires[i].speedx = Math.random()*20-10;
+            //-10~30
+            nfires[i].speedy = Math.random()*25-25;
+            document.body.appendChild(nfires[i]);
+        }
+
+        var time=setInterval(function () {
+            for(var i=0;i<nfires.length;i++){
+                nfires[i].style.left = nfires[i].offsetLeft+nfires[i].speedx+"px";
+                nfires[i].style.top = nfires[i].offsetTop+nfires[i].speedy+"px";
+                nfires[i].speedy+=1.8;
+                if(nfires[i].offsetTop>=H){
+                    document.body.removeChild(nfires[i]);
+                }
+            }
+        },1000/60)
+    }
+
+    function color() {
+        var r =Math.ceil(Math.random()*255);
+        var g =Math.ceil(Math.random()*255);
+        var b =Math.ceil(Math.random()*255);
+        return "rgb("+r+","+g+","+b+")";
+    }
+
+    
+    document.onclick = function (event) {
+        var x = event.clientX;
+        var y = event.clientY;
+        firework(x,y);
+    }
+
+
+</script>
+</body>
+</html>

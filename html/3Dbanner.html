@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style id="css">
+        *{ padding: 0;margin: 0;}
+        #pic{ margin:140px auto;height: 450px;width: 800px;perspective: 800px;margin-bottom: 0;}
+        #pic ul{ height: 450px;}
+        #pic ul li{ list-style: none;position: relative;float: left;height: 450px;
+            transform-style: preserve-3d;transform: translateZ(-225px);}
+        #pic ul li div{ position: absolute;height: 450px;}
+        #pic ul li div:nth-child(1){ top: -450px;transform-origin: bottom;transform: translateZ(225px) rotateX(90deg);
+        background: url("../img/banner1.jpg");background-size: auto 450px;}
+        #pic ul li div:nth-child(2){ transform-origin: top;top: 450px;transform: translateZ(225px) rotateX(-90deg);
+        background: url("../img/banner2.png");background-size: auto 450px;}
+        #pic ul li div:nth-child(3){ transform: translateZ(225px);background: url("../img/banner3.jpg");
+            background-size: 800px 450px;}
+        #pic ul li div:nth-child(4){ transform: translateZ(-225px);background: url("../img/banner4.jpg");
+        background-size: auto 450px;}
+        /*#pic:hover ul li{ transform: rotateX(360deg)}*/
+        #tab{ margin: 10px auto;height: 30px;width: 300px;text-align: center;}
+        #tab ul{ overflow: hidden;display:inline-block;margin-top: 20px}
+        #tab ul li{ list-style: none;float: left;margin: 10px;border: 1px solid #1d1d1d;border-radius: 50%;
+        display: block;width: 20px;height: 20px;font-size: 15px;}
+        .current{ background: #a3a3a3;}
+        #tab ul li{ cursor: pointer;user-select: none;}
+    </style>
+</head>
+<body>
+<div id="cont">
+    <div id="pic">
+        <ul></ul>
+    </div>
+    <div id="tab">
+        <ul>
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(function () {
+            var lWidth=0,z=0,bgp=0,num=100,flag=true;
+            function create(num) {
+                lWidth = 800/num;
+                for(var i=0;i<num;i++){
+                    $("#pic ul").append("<li><div></div><div></div><div></div><div></div></li>");
+                    $("#pic ul li:nth-child("+(i+1)+") div").css("background-position",bgp);
+                    if(i>num/2){
+                        z--;
+                        $("#pic ul li:nth-child("+(i+1)+")").css("z-index",z);
+                    }
+                    bgp = bgp-lWidth;
+                }
+            }
+            var ocss = document.getElementById("css");
+            create(num);
+            $("#pic ul li div,#pic ul li").css("width",lWidth);
+            $("#tab ul li:nth-child(1)").click(function () {
+                if(flag==false){
+                    return;
+                }
+                flag=false;
+                $("#tab ul li").removeClass("current");
+                $(this).addClass("current");
+                myclick(1);
+                setTimeout(function () {
+                    flag=true;
+                },2000);
+            });
+            $("#tab ul li:nth-child(2)").click(function () {
+                if(flag==false){
+                    return;
+                }
+                flag=false;
+                $("#tab ul li").removeClass("current");
+                $(this).addClass("current");
+                myclick(2);
+                setTimeout(function () {
+                    flag=true;
+                },2000);
+            });
+            $("#tab ul li:nth-child(3)").click(function () {
+                if(flag==false){
+                    return;
+                }
+                flag=false;
+                $("#tab ul li").removeClass("current");
+                $(this).addClass("current");
+                myclick(3);
+                setTimeout(function () {
+                    flag=true;
+                },2000);
+            });
+            $("#tab ul li:nth-child(4)").click(function () {
+                if(flag==false){
+                    return;
+                }
+                flag=false;
+                $("#tab ul li").removeClass("current");
+                $(this).addClass("current");
+                myclick(4);
+                setTimeout(function () {
+                    flag=true;
+                },2000);
+            });
+
+            function myclick(nth) {
+
+                for(var i=0;i<num;i++){
+                    $("#pic ul li:nth-child("+(i+1)+")").css("transition",""+(1+i*.01)+"s");
+                }
+                ocss.innerHTML+="#pic ul li{ transform: translateZ(-225px) rotateX("+(nth-1)*90+"deg);}";
+
+            }
+        })
+    </script>
+</div>
+</body>
+</html>

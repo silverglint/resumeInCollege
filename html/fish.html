@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>fish</title>
+    <style>
+        *{ padding: 0;margin: 0;}
+        #wrap{ position: relative;margin: 30px auto;width: 800px;}
+        canvas{ position: absolute;top: 0;left: 0;}
+        #canvas1{ z-index: 0;}
+        #canvas2{ z-index: 1;}
+        .rule{ float: right;margin-top: 100px;margin-right: 100px;text-align: center;width: 200px;}
+        .rule p{ padding: 10px;}
+        .rule a{ font-size: 30px;font-family: "Microsoft YaHei"}
+        #zoom { position: fixed;width: 100%;margin: 0 auto;text-align: center;top: 0;display: none;}
+        #zoom span{ background-color: #b3d4fc;}
+    </style>
+</head>
+<body>
+<div id="wrap">
+    <canvas id="canvas1"></canvas>
+    <canvas id="canvas2"></canvas>
+</div>
+<div class="rule">
+    <a>游戏规则</a><br>
+    <p>大鱼吃果子喂小鱼,</p>
+    <p>橘色果子1分，</p>
+    <p>蓝色果子不得分，</p>
+    <p>但会使大鱼口中的橘色果子数量翻倍。</p>
+    <p>小鱼一段时间不吃果子会变白直至死去，游戏结束。</p>
+</div>
+<div id="zoom"><span>您的浏览器缩放比例不是100%，可能导致页面错乱，按ctrl+o恢复</span></div>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/commonAnimationFunctions.js"></script>
+<script src="../js/fish-game/fishjs.js"></script>
+<script src="../js/fish-game/Ani.js"></script>
+<script src="../js/fish-game/fruit.js"></script>
+<script src="../js/fish-game/big-fish.js"></script>
+<script src="../js/fish-game/small-fish.js"></script>
+<script src="../js/fish-game/score.js"></script>
+<script src="../js/fish-game/wave.js"></script>
+<script src="../js/fish-game/feedW.js"></script>
+<script src="../js/fish-game/dust.js"></script>
+<script>
+    //获得页面缩放比例
+    function detectZoom (){
+        var ratio = 0,
+            screen = window.screen,
+            ua = navigator.userAgent.toLowerCase();
+
+        if (window.devicePixelRatio !== undefined) {
+            ratio = window.devicePixelRatio;
+        }
+        else if (~ua.indexOf('msie')) {
+            if (screen.deviceXDPI && screen.logicalXDPI) {
+                ratio = screen.deviceXDPI / screen.logicalXDPI;
+            }
+        }
+        else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+            ratio = window.outerWidth / window.innerWidth;
+        }
+
+        if (ratio){
+            ratio = Math.round(ratio * 100);
+        }
+
+        return ratio;
+    }
+    var show = document.getElementById("zoom");
+    setInterval(function (args) {
+        var zoom = detectZoom();
+
+        if(zoom!=100){
+            show.style.display = "block";
+        }else{
+            show.style.display = "none";
+        }
+    },2000)
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D相册</title>
+    <style>
+        *{ padding: 0;margin: 0;}
+        body{ background: #000;}
+        #perspective{ perspective:10000px;/*景深*/}
+        #pic{
+            position: relative;
+            width: 200px;
+            margin: 250px auto;
+            transform-style: preserve-3d;/*构建3d场景*/
+            transform: rotateY(0deg) rotateX(-10deg);
+            user-select: none;
+        }
+        #pic img{
+            position: absolute;
+            padding: 5px;
+            border: 1px solid #a3a3a3;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #a3a3a3;
+            transition: 1s;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="perspective">
+        <div id="pic">
+            <img src="../img/3Dphoto/1.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/2.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/3.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/4.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/5.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/6.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/7.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/8.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/9.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/10.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/11.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/12.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/13.jpg" alt="" width="200">
+            <img src="../img/3Dphoto/14.jpg" alt="" width="200">
+        </div>
+    </div>
+<script>
+    var oimg = document.getElementsByTagName("img");
+    var opic = document.getElementById("pic");
+    var deg = 360/14;
+    window.onload = function () {
+        Array.prototype.forEach.call(oimg,function (el, index) {
+            el.style.transform = "rotateY("+(index*deg)+"deg) translateZ(600px)";
+            el.style.transitionDelay = ""+(15-index)*0.1+"s";
+        });
+
+        var ox,oy,nx,ny,rotateX,rotateY,difX=0,difY=0,timer,flag=true,flag2;
+        document.onmousedown = function (event) {
+
+            if (flag===false){
+                flag2=false;
+                return;
+            }
+            flag2 = true;
+            opic.style.transition = "0s";
+            ox = event.clientX;
+            oy = event.clientY;
+            if (timer){
+                clearInterval(timer);
+            }
+
+            this.onmousemove = function (event) {
+                if (flag===false){
+                    return;
+                }
+                nx = event.clientX;
+                ny = event.clientY;
+
+                rotateX = nx-ox;
+                rotateY = ny-oy;
+
+                difX += rotateX;
+                difY = rotateY*0.1+100/3;
+
+                console.log(ox+","+oy+"n"+nx+","+ny);
+
+
+                opic.style.transform = " rotateX("+(-difY)*.3+"deg) rotateY("+(difX)*.03+"deg)";
+                ox = nx;
+                //oy = ny;
+            };
+
+            this.onmouseup = function () {
+                if (flag===false||flag2===false){
+                    return;
+                }
+                flag=false;
+                opic.style.transition = "1s";
+                opic.style.transform = "rotateX(-10deg) rotateY("+(difX)*.03+"deg)";
+
+
+                setTimeout(function (args) {
+
+                    timer = setInterval(function (args) {
+                        flag=true;
+                        opic.style.transition = "0s";
+                        opic.style.transform = "rotateX(-10deg) rotateY("+(difX)*.03+"deg)";
+                        difX++;
+                    },10);
+                },1000);
+
+                this.onmousemove = null;
+            };
+
+        };
+
+        timer = setInterval(function (args) {
+
+            opic.style.transform = "rotateX(-10deg) rotateY("+(difX)*.03+"deg)";
+            difX++;
+        },10);
+
+        for(i in document.images)document.images[i].ondragstart=function () {
+            return false;
+        };
+    };
+</script>
+</body>
+</html>
