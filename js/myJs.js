@@ -179,22 +179,22 @@ $(function () {
     var top4 = $("#contact").offset().top;
 
    $("#firstpage,.sider-back").on("click",function () {
-       $("body").animate({
+       $("body,html").animate({
            scrollTop:top1
-       },600,"swing")
+       },600,"swing");
    });
     $("#info").on("click",function () {
-        $("body").animate({
+        $("body,html").animate({
             scrollTop:top2+20
         },600,"swing")
     });
     $("#skill").on("click",function () {
-        $("body").animate({
+        $("body,html").animate({
             scrollTop:top3+20
         },600,"swing")
     });
     $("#conme,.sider-cont").on("click",function () {
-        $("body").animate({
+        $("body,html").animate({
             scrollTop:top4
         },600,"swing");
     });
