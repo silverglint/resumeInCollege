@@ -24,25 +24,38 @@
             transition: 1s;
             user-select: none;
         }
+        .preload{ width: 0;height: 6px;position: fixed;top: 0;left: 0;background: #18ff22
+        }
     </style>
+    <script src="../js/jquery-3.2.1.min.js"></script>
 </head>
 <body>
+    <div class="preload"></div>
     <div id="perspective">
         <div id="pic">
             <img src="../img/3Dphoto/1.jpg" alt="" width="200">
             <img src="../img/3Dphoto/2.jpg" alt="" width="200">
+            <script>$('.preload').animate({width:'14%'},100)</script>
             <img src="../img/3Dphoto/3.jpg" alt="" width="200">
             <img src="../img/3Dphoto/4.jpg" alt="" width="200">
+            <script>$('.preload').animate({width:'28%'},100)</script>
             <img src="../img/3Dphoto/5.jpg" alt="" width="200">
             <img src="../img/3Dphoto/6.jpg" alt="" width="200">
+            <script>$('.preload').animate({width:'42%'},100)</script>
             <img src="../img/3Dphoto/7.jpg" alt="" width="200">
             <img src="../img/3Dphoto/8.jpg" alt="" width="200">
+            <script>$('.preload').animate({width:'56%'},100)</script>
             <img src="../img/3Dphoto/9.jpg" alt="" width="200">
             <img src="../img/3Dphoto/10.jpg" alt="" width="200">
+            <script>$('.preload').animate({width:'70%'},100)</script>
             <img src="../img/3Dphoto/11.jpg" alt="" width="200">
             <img src="../img/3Dphoto/12.jpg" alt="" width="200">
+            <script>$('.preload').animate({width:'84%'},100)</script>
             <img src="../img/3Dphoto/13.jpg" alt="" width="200">
             <img src="../img/3Dphoto/14.jpg" alt="" width="200">
+            <script>
+                $('.preload').animate({width:'100%'},100).fadeOut();
+            </script>
         </div>
     </div>
 <script>

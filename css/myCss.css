@@ -1,7 +1,7 @@
 *{ padding: 0;margin: 0;}
 body{ font-family: "Microsoft YaHei UI Light";}
 .body-cont{ min-width: 950px;}
-h2{ user-select: none;cursor: default;}
+h2{ -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;cursor: default;}
 #mycanvas{ display: block;width: 100%;height: 100%;background: black;opacity: 0.3;position: fixed;z-index: -1;}
 /*nav部分*/
 header{ overflow: hidden;}
@@ -11,7 +11,7 @@ nav ul{ list-style: none;line-height: 60px;display: inline-block;overflow: hidde
 nav ul li{ float: left;padding: 0 17.5px;height: 57px;overflow: hidden;}
 nav ul li:hover,.current{ background: grey;border-bottom: 3px solid orange;}
 .iconfont{ font-size: 40px;color: black;}
-a{ text-decoration: none;cursor: pointer;user-select: none;}
+a{ text-decoration: none;cursor: pointer;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
 
 /*body部分*/
 .body .mess-cont{ width: 100%;background: rgba(9, 0, 89, 0.69);color: #fefff1}
@@ -26,9 +26,9 @@ a{ text-decoration: none;cursor: pointer;user-select: none;}
 
 /*学校信息*/
 
-.school{ width: 20%;height: 300px;transition: .3s;position: relative;overflow: hidden;margin: 0 21px;float: left;border: 1px solid gray;}
-.school:hover{ transform: translate3d(0px,-5px,0px);box-shadow: 0px 10px 20px rgba(0,0,0,.3);}
-.school .school-mess{ position: absolute;bottom: -170px;padding: 10px;text-align: center;background: #e2fad7;transition: .3s;height: 150px;opacity: .9;color: #57005d;text-shadow:0 0 15px #ffb18f;}
+.school{ width: 20%;height: 300px;-webkit-transition: .3s;-o-transition: .3s;transition: .3s;position: relative;overflow: hidden;margin: 0 21px;float: left;border: 1px solid gray;}
+.school:hover{ -webkit-transform: translate3d(0px,-5px,0px); transform: translate3d(0px,-5px,0px);-webkit-box-shadow: 0px 10px 20px rgba(0,0,0,.3);box-shadow: 0px 10px 20px rgba(0,0,0,.3);}
+.school .school-mess{ position: absolute;bottom: -170px;padding: 10px;text-align: center;background: #e2fad7;-webkit-transition: .3s;-o-transition: .3s;transition: .3s;height: 150px;opacity: .9;color: #57005d;text-shadow:0 0 15px #ffb18f;}
 .school:hover.school .school-mess{ bottom: 0px;}
 
 .zsl{ background: url("../img/zsl.png") no-repeat;width: 100%;height: 100%;text-align: center;padding-top: 5px;color: #d1d1d1;font-weight: bold;font-size: 30px;text-shadow: 0 0 1em red, -0 -0 .1em red;font-family: helvetica,arial,sans-serif;background-size: 210px;}
@@ -96,10 +96,10 @@ footer .last p{ float: right;margin-right: 70px;color: white;line-height: 60px;f
 /*侧边栏*/
 .container .sider { position: fixed;top:45%;left: 92%;}
 .container .sider ul{ list-style: none;}
-.container .sider ul li{ border: 1px solid rgba(255,255,255,.6);margin: 20px;background: rgba(255,255,255,.6);border-radius: 10px;transition: .3s;position: relative;}
+.container .sider ul li{ border: 1px solid rgba(255,255,255,.6);margin: 20px;background: rgba(255,255,255,.6);border-radius: 10px;-webkit-transition: .3s;-o-transition: .3s;transition: .3s;position: relative;}
 .container .sider ul li a{ display: block;margin: 5px;}
 .container .sider ul li:hover{ background: rgba(255,255,255,1);border-radius: 0;}
-.sider span{ position: absolute;background: none;transition: .3s;}
+.sider span{ position: absolute;background: none;-webkit-transition: .3s;-o-transition: .3s;transition: .3s;}
 .sider .l-bottom{ width: 0;height: 2px;bottom: -1px;left: -200%;}
 .container .sider ul li:hover .l-bottom{ width: 100%;left: 0;background: white;}
 .sider .l-left{ width: 2px;height: 0;top: -100%;left: -1px;}
@@ -113,3 +113,7 @@ footer .last p{ float: right;margin-right: 70px;color: white;line-height: 60px;f
 #snow-inner{ margin:0 20%;width: 60%;position: fixed;top: 15%;display: none;z-index: 50;}
 #e3d-inner{ margin:0 20%;width: 60%;position: fixed;top: 15%;display: none;z-index: 50;}
 #water-inner{ margin:0 20%;width: 60%;position: fixed;top: 15%;display: none;z-index: 50;}
+
+.preload{ width: 100%;height: 100%;position: fixed;z-index: 999;background: #efefef;}
+.preload .pre-img{ width: 109px;height :109px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;}
+.preload .pre-text{ text-align: center;margin-top: 18%;font-weight: bold;}

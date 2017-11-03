@@ -7,8 +7,23 @@
     <link rel="stylesheet" type="text/css" href="css/myCss.css">
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <script src="js/jquery-3.2.1.min.js"></script>
+    <script>
+        document.onreadystatechange=function(){
+            if(this.readyState=='complete'){
+                $('.preload').fadeOut();
+            }
+        }
+    </script>
 </head>
 <body>
+
+<div class="preload">
+    <div class="pre-img">
+        <img src="img/雾雷达.gif" alt="连加载动画都丢失了呢！">
+    </div>
+    <p class="pre-text">页面加载中，请稍等...</p>
+</div>
+
 <div class="container">
     <canvas id="mycanvas">您的浏览器不支持canvas</canvas>
 
@@ -70,7 +85,7 @@
                 </div>
                 <div class="skill">
                     <p>
-                        掌握java基础知识(基本语法，jdbc，jsp，servlet)，精通html/css(bootstrap无法熟练使用)，掌握JavaScript，曾经自学过特效，会使用PS、AE、Pr等工具。
+                        掌握java基础知识(基本语法，jdbc，jsp，servlet)，精通html/css，掌握JavaScript，JQuery，了解Vue.js、React.js，曾经自学过特效，会使用Ps、AE、Pr等工具。
                     </p>
                 </div>
                 <br><br><br><br><br>
@@ -133,7 +148,7 @@
             </div>
         </div>
         <video id="snow-inner" src="video/雪花.webm" loop autoplay></video>
-        <video id="water-inner" src="video/海底.mp4" muted loop autoplay></video>
+        <video id="water-inner" src="video/海底.webm" muted loop autoplay></video>
         <video id="e3d-inner" src="video/破片小球.mov" loop autoplay></video>
     </div>
 

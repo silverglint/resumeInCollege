@@ -12,11 +12,27 @@
         .rule{ float: right;margin-top: 100px;margin-right: 100px;text-align: center;width: 200px;}
         .rule p{ padding: 10px;}
         .rule a{ font-size: 30px;font-family: "Microsoft YaHei"}
-        #zoom { position: fixed;width: 100%;margin: 0 auto;text-align: center;top: 0;display: none;}
-        #zoom span{ background-color: #b3d4fc;}
+        #zoom { position: fixed;width: 100%;margin: 0 auto;text-align: center;top: 0;display: none;background: #efefef;height: 30px;}
+        .preload{ width: 100%;height: 100%;position: fixed;z-index: 999;background: #efefef;top: 30px;}
+        .preload .pre-img{ width: 109px;height :109px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;}
+        .preload .pre-text{ text-align: center;margin-top: 18%;font-weight: bold;}
     </style>
+    <script>
+        document.onreadystatechange = function () {
+            if(this.readyState=='complete'){
+                $('.preload').hide();
+                $('#zoom').css('background','#fff');
+            }
+        }
+    </script>
 </head>
 <body>
+<div class="preload">
+    <div class="pre-img">
+        <img src="../img/喵喵喵.gif" alt="连加载动画都丢失了呢！">
+    </div>
+    <p class="pre-text">页面加载中，请稍等...</p>
+</div>
 <div id="wrap">
     <canvas id="canvas1"></canvas>
     <canvas id="canvas2"></canvas>
@@ -29,7 +45,7 @@
     <p>但会使大鱼口中的橘色果子数量翻倍。</p>
     <p>小鱼一段时间不吃果子会变白直至死去，游戏结束。</p>
 </div>
-<div id="zoom"><span>您的浏览器缩放比例不是100%，可能导致页面错乱，按ctrl+o恢复</span></div>
+<div id="zoom"><span>您的浏览器缩放比例不是100%，可能导致页面错乱，按ctrl+0恢复</span></div>
 <script src="../js/jquery-3.2.1.min.js"></script>
 <script src="../js/commonAnimationFunctions.js"></script>
 <script src="../js/fish-game/fishjs.js"></script>
@@ -67,8 +83,14 @@
         return ratio;
     }
     var show = document.getElementById("zoom");
+    var zoom = detectZoom();
+    if(zoom!=100){
+        show.style.display = "block";
+    }else{
+        show.style.display = "none";
+    }
     setInterval(function (args) {
-        var zoom = detectZoom();
+        zoom = detectZoom();
 
         if(zoom!=100){
             show.style.display = "block";
